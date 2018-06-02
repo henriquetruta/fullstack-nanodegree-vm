@@ -15,20 +15,7 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
-CREATE TABLE categories (
-    title text NOT NULL,
-    id SERIAL PRIMARY KEY
-);
-
-CREATE TABLE items (
-    title text NOT NULL,
-    description text NOT NULL,
-    categoryId integer NOT NULL,
-    FOREIGN KEY (categoryId) REFERENCES categories(id),
-    id SERIAL PRIMARY KEY
-);
-
-INSERT INTO categories (title) VALUES
+INSERT INTO category (title) VALUES
 ('Football'),
 ('Basketball'),
 ('Baseball'),
