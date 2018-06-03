@@ -10,24 +10,24 @@ Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-football = Category(title="Football")
-baseball = Category(title="Baseball")
-frisbee = Category(title="Frisbee")
-snowboarding = Category(title="Snowboarding")
-rock_climbing = Category(title="Rock Climbing")
-foosball = Category(title="Foosball")
-skating = Category(title="Skating")
-hockey = Category(title="Hockey")
+football = Category(name="Football")
+baseball = Category(name="Baseball")
+frisbee = Category(name="Frisbee")
+snowboarding = Category(name="Snowboarding")
+rock_climbing = Category(name="Rock Climbing")
+foosball = Category(name="Foosball")
+skating = Category(name="Skating")
+hockey = Category(name="Hockey")
 categories = [football, baseball, frisbee, snowboarding, rock_climbing,
             foosball, skating, hockey]
 session.bulk_save_objects(categories)
 
-football_shoes = Item(title="Shoe", description="very cool",
-                      categoryId=1)
-football_ball = Item(title="Ball", description="Nice ball",
-                      categoryId=1)
-baseball_ball = Item(title="Ball", description="Best ever",
-                      categoryId=2)
+football_shoes = Item(name="Shoe", description="very cool",
+                      categoryName="Football")
+football_ball = Item(name="Ball", description="Nice ball",
+                      categoryName="Football")
+baseball_ball = Item(name="Ball", description="Best ever",
+                      categoryName="Baseball")
 items = [football_shoes, football_ball, baseball_ball]
 
 session.bulk_save_objects(items)

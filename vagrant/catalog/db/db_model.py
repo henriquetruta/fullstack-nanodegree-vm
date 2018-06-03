@@ -7,14 +7,12 @@ Base = declarative_base()
 
 class Category(Base):
     __tablename__ = 'category'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(250), nullable=False)
+    name = Column(String(250),primary_key=True)
 
 class Item(Base):
     __tablename__ = 'item'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(64), nullable=False)
+    name = Column(String(64), primary_key=True)
+    categoryName = Column(String, ForeignKey('category.name'), primary_key=True)
     description = Column(String(250), nullable=False)
-    categoryId = Column(Integer, ForeignKey('category.id'))
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     category = relationship(Category)

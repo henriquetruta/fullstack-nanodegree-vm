@@ -10,14 +10,14 @@ class Database():
         self.session = DBSession()
 
     def list_items(self, category):
-        return self.session.query(Item).filter_by(categoryId=category).all()
+        return self.session.query(Item).filter_by(categoryName=category).all()
 
     def get_latest_items(self):
         return self.session.query(Item).order_by(
             Item.created_date.desc()).limit(10).all()
 
-    def insert_item(self, title, description, category):
-        item = Item(title=title, description=description,
+    def insert_item(self, name, description, category):
+        item = Item(name=name, description=description,
                     category=self._get_category(category))
         self.session.add(item)
         self.session.commit()
@@ -25,8 +25,8 @@ class Database():
     def list_categories(self):
         return self.session.query(Category).all()
 
-    def delete_item(self, item_id):
-        item = self.session.query(Item).filter_by(id=item_id).one()
+    def delete_item(self, item_name, category_name):
+        item = self.session.query(Item).filter_by(name=item_name, categoryName=category_name).one()
         self.session.delete(item)
         self.session.commit()
 
@@ -34,11 +34,11 @@ class Database():
         self.session.add(item)
         self.session.commit()
 
-    def get_category_name(self, category_id):
-        return self.session.query(Category).filter_by(id=category_id).one().title
+    def get_category_name(self, category_name):
+        return self.session.query(Category).filter_by(name=category_name).one().name
 
-    def _get_category(self, category_id):
-        return self.session.query(Category).filter_by(id=category_id).one()
+    def _get_category(self, category_name):
+        return self.session.query(Category).filter_by(name=category_name).one()
 
-    def get_item(self, item_id, category_id=None):
-        return self.session.query(Item).filter_by(id=item_id).one()
+    def get_item(self, item_name, category_name):
+        return self.session.query(Item).filter_by(name=item_name, categoryName=category_name).one()

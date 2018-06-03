@@ -19,52 +19,52 @@ def home():
 def add_item():
     if request.method == 'POST':
         category = request.form['category']
-        db.insert_item(request.form['title'],
+        db.insert_item(request.form['name'],
                        request.form['description'],
                        category)
-        return redirect(url_for('list_items', category_id=category))
+        return redirect(url_for('list_items', category_name=category))
     else:
         categories = db.list_categories()
         return render_template('new_item.html', categories=categories)
 
 
-@app.route("/catalog/<int:category_id>/<int:item_id>/details", methods=["GET"])
-def get_item(category_id, item_id):
-    item = db.get_item(item_id, category_id)
+@app.route("/catalog/<category_name>/<item_name>/details", methods=["GET"])
+def get_item(category_name, item_name):
+    item = db.get_item(item_name, category_name)
     return render_template('item_description.html', item=item)
 
 
-@app.route("/catalog/<int:category_id>/list", methods=["GET"])
-def list_items(category_id):
-    items = db.list_items(category_id)
-    category_name = db.get_category_name(category_id)
+@app.route("/catalog/<category_name>/list", methods=["GET"])
+def list_items(category_name):
+    items = db.list_items(category_name)
+    category_name = db.get_category_name(category_name)
     return render_template('items.html', items=items,
                            category_name=category_name)
 
 
-@app.route("/catalog/<int:category_id>/item/<int:item_id>/delete", methods=["POST", "GET"])
-def delete_item(item_id, category_id):
-    item = db.get_item(item_id, category_id)
+@app.route("/catalog/<category_name>/item/<item_name>/delete", methods=["POST", "GET"])
+def delete_item(item_name, category_name):
+    item = db.get_item(item_name, category_name)
     if request.method == 'POST':
-        db.delete_item(item_id)
-        return redirect(url_for('list_items', category_id=item.categoryId))
+        db.delete_item(item_name, category_name)
+        return redirect(url_for('list_items', category_name=item.categoryName))
     else:
         return render_template('item_delete.html', item=item)
 
 
-@app.route("/catalog/<int:category_id>/item/<int:item_id>/edit", methods=["POST", "GET"])
-def edit_item(category_id, item_id):
-    item = db.get_item(item_id)
+@app.route("/catalog/<category_name>/item/<item_name>/edit", methods=["POST", "GET"])
+def edit_item(category_name, item_name):
+    item = db.get_item(item_name, category_name)
     if request.method == 'POST':
         if request.form['name']:
             item.name = request.form['name']
         if request.form['description']:
             item.description = request.form['description']
         if request.form['category']:
-            item.categoryId = request.form['category']
+            item.categoryName = request.form['category']
         db.edit_item(item)
-        return redirect(url_for('get_item', item_id=item.id,
-                        category_id=category_id))
+        return redirect(url_for('get_item', item_name=item.name,
+                        category_name=category_name))
     else:
         categories = db.list_categories()
         return render_template('item_edit.html', item=item,
@@ -81,8 +81,9 @@ if __name__ == '__main__':
 
 
 # TODO:
-# Redo URLs
 # Login
 # Check if the user created
+# Bug: Change category
+# JSON
 # HTML
 # CSS

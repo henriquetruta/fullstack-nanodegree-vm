@@ -15,7 +15,7 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
-INSERT INTO category (title) VALUES
+INSERT INTO category (name) VALUES
 ('Football'),
 ('Basketball'),
 ('Baseball'),
