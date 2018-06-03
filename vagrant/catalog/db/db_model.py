@@ -1,5 +1,6 @@
+import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
@@ -15,4 +16,5 @@ class Item(Base):
     title = Column(String(64), nullable=False)
     description = Column(String(250), nullable=False)
     categoryId = Column(Integer, ForeignKey('category.id'))
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
     category = relationship(Category)

@@ -9,7 +9,9 @@ db = Database()
 @app.route("/")
 def home():
     categories = db.list_categories()
-    return render_template('home.html', categories=categories)
+    latest = db.get_latest_items()
+    return render_template('home.html', categories=categories,
+                           latest=latest)
 
 
 @app.route("/item/new", methods=["POST", "GET"])
@@ -80,8 +82,8 @@ if __name__ == '__main__':
 
 
 # TODO:
-# Redo URLs
 # Latest items
+# Redo URLs
 # Login
 # Check if the user created
 # HTML

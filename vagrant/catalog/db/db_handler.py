@@ -12,6 +12,10 @@ class Database():
     def list_items(self, category):
         return self.session.query(Item).filter_by(categoryId=category).all()
 
+    def get_latest_items(self):
+        return self.session.query(Item).order_by(
+            Item.created_date.desc()).limit(10).all()
+
     def insert_item(self, title, description, category):
         item = Item(title=title, description=description,
                     category=self._get_category(category))
