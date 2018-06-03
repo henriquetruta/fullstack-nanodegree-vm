@@ -49,6 +49,27 @@ def delete_item(item_id):
         return render_template('item_delete.html', item=item)
 
 
+@app.route("/item/<int:item_id>/edit", methods=["POST", "GET"])
+def edit_item(item_id):
+    print "YAYY"
+    item = db.get_item(item_id)
+    if request.method == 'POST':
+        print "YAYY2"
+        if request.form['name']:
+            item.name = request.form['name']
+        if request.form['description']:
+            item.description = request.form['description']
+        if request.form['category']:
+            item.categoryId = request.form['category']
+        print "YAYY3"
+        db.edit_item(item)
+        return redirect(url_for('get_item', item_id=item.id))
+    else:
+        categories = db.list_categories()
+        return render_template('item_edit.html', item=item,
+                               categories=categories)
+
+
 @app.route("/catalog/login", methods=["POST"])
 def login():
     return "Login"
@@ -59,9 +80,9 @@ if __name__ == '__main__':
 
 
 # TODO:
-# Edit item
+# Redo URLs
+# Latest items
 # Login
 # Check if the user created
-# Latest items
 # HTML
 # CSS

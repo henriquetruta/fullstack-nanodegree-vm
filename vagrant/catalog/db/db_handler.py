@@ -23,8 +23,11 @@ class Database():
 
     def delete_item(self, item_id):
         item = self.session.query(Item).filter_by(id=item_id).one()
-        print "item", item
         self.session.delete(item)
+        self.session.commit()
+
+    def edit_item(self, item):
+        self.session.add(item)
         self.session.commit()
 
     def get_category_name(self, category_id):
