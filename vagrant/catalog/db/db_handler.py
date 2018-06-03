@@ -40,5 +40,5 @@ class Database():
     def _get_category(self, category_id):
         return self.session.query(Category).filter_by(id=category_id).one()
 
-    def get_item(self, item_id):
+    def get_item(self, item_id, category_id=None):
         return self.session.query(Item).filter_by(id=item_id).one()
