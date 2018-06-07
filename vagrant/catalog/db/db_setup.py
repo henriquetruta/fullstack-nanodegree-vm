@@ -23,11 +23,11 @@ categories = [football, baseball, frisbee, snowboarding, rock_climbing,
 session.bulk_save_objects(categories)
 
 football_shoes = Item(name="Shoe", description="very cool",
-                      categoryName="Football")
+                      categoryName="Football", created_by='henrique')
 football_ball = Item(name="Ball", description="Nice ball",
-                      categoryName="Football")
+                      categoryName="Football", created_by='henrique')
 baseball_ball = Item(name="Ball", description="Best ever",
-                      categoryName="Baseball")
+                      categoryName="Baseball", created_by='henrique')
 items = [football_shoes, football_ball, baseball_ball]
 
 session.bulk_save_objects(items)

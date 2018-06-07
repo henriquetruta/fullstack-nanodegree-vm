@@ -15,4 +15,5 @@ class Item(Base):
     categoryName = Column(String, ForeignKey('category.name'), primary_key=True)
     description = Column(String(250), nullable=False)
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
+    created_by = Column(String(64))
     category = relationship(Category)
