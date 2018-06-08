@@ -1,5 +1,5 @@
-<html>
-<body>
+{% extends "layout.html" %}
+{% block body %}
 <h1>Details of {{item.name}}</h1>
 <div>
 <p>{{item.description}}</p>
@@ -10,5 +10,4 @@
 <p><a href="{{url_for('delete_item', item_name=item.name, category_name=item.categoryName)}}"> Delete Item</a></p>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}

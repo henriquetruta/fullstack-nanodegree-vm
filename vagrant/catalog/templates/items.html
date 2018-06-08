@@ -1,10 +1,9 @@
-<html>
-<body>
+{% extends "layout.html" %}
+{% block body %}
 <h1>Items for {{category_name}}</h1>
 {% for i in items %}
 <div>
 <p><a href="{{url_for('get_item', item_name=i.name, category_name=i.categoryName)}}"> {{i.name}}</a></p>
 </div>
 {% endfor %}
-</body>
-</html>
+{% endblock %}
