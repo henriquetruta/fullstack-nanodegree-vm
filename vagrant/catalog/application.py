@@ -1,6 +1,6 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, redirect, request, render_template, url_for, flash
+from flask import Flask, redirect, request, render_template, url_for, flash, jsonify
 from db.db_handler import Database
 from flask import session as login_session
 import random, string
@@ -28,11 +28,14 @@ def home():
     categories = db.list_categories()
     latest = db.get_latest_items()
     # return "The current session state is %s" % login_session['state']
-    logged = False
-    if 'email' in login_session:
-        logged=True
     return render_template('home.html', categories=categories,
-                           latest=latest, logged=logged)
+                           latest=latest)
+
+
+@app.route("/catalog.json")
+def items_json():
+    items = db.list_all_items_json()
+    return jsonify(Items=[i.serialize for i in items])
 
 
 @app.route("/catalog/item/new", methods=["POST", "GET"])
@@ -41,7 +44,8 @@ def add_item():
         category = request.form['category']
         db.insert_item(request.form['name'],
                        request.form['description'],
-                       category)
+                       category,
+                       login_session['email'])
         return redirect(url_for('list_items', category_name=category))
     else:
         categories = db.list_categories()
@@ -171,6 +175,7 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    login_session['logged_in'] = True
 
     output = ''
     output += '<h1>Welcome, '
@@ -206,6 +211,7 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
+        login_session.pop('logged_in', None)
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -220,12 +226,8 @@ if __name__ == '__main__':
 
 
 # TODO:
-# Use user id on creation
-# Check if the user created when editing/deleting
-# Bug: Change category
-# JSON
-# HTML
 # CSS
+# Bug: Change category
 
 # client id 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com
 # client secret nzHsrTQ8rvgcKDGTAXlLJkud

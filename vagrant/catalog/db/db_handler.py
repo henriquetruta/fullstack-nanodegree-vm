@@ -12,13 +12,17 @@ class Database():
     def list_items(self, category):
         return self.session.query(Item).filter_by(categoryName=category).all()
 
+    def list_all_items_json(self):
+        return self.session.query(Item).all()
+
     def get_latest_items(self):
         return self.session.query(Item).order_by(
             Item.created_date.desc()).limit(10).all()
 
-    def insert_item(self, name, description, category):
+    def insert_item(self, name, description, category, email):
         item = Item(name=name, description=description,
-                    category=self._get_category(category))
+                    category=self._get_category(category),
+                    created_by=email)
         self.session.add(item)
         self.session.commit()
 

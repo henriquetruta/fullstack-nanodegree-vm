@@ -17,3 +17,14 @@ class Item(Base):
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     created_by = Column(String(64))
     category = relationship(Category)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'description': self.description,
+            'categoryName': self.categoryName,
+            'created_date': self.created_date,
+            'created_by': self.created_by,
+        }
