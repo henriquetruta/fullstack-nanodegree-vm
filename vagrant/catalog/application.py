@@ -1,26 +1,27 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, redirect, request, render_template, url_for, flash, jsonify
+from flask import Flask, flash, jsonify, make_response, redirect, request
+from flask import render_template, url_for
 from db.db_handler import Database
 from flask import session as login_session
-import random, string
-# IMPORTS FOR THIS STEP
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
+
 import httplib2
 import json
-from flask import make_response
+import random
 import requests
+import string
 
 app = Flask(__name__)
 app.secret_key = 'some secret key'
-# Session(app)
 
 db = Database()
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Item Catalog Application"
+
 
 @app.route("/catalog")
 @app.route("/")
@@ -67,7 +68,8 @@ def list_items(category_name):
                            category_name=category_name)
 
 
-@app.route("/catalog/<category_name>/item/<item_name>/delete", methods=["POST", "GET"])
+@app.route("/catalog/<category_name>/item/<item_name>/delete",
+           methods=["POST", "GET"])
 def delete_item(item_name, category_name):
     item = db.get_item(item_name, category_name)
     if request.method == 'POST':
@@ -77,7 +79,8 @@ def delete_item(item_name, category_name):
         return render_template('item_delete.html', item=item)
 
 
-@app.route("/catalog/<category_name>/item/<item_name>/edit", methods=["POST", "GET"])
+@app.route("/catalog/<category_name>/item/<item_name>/edit",
+           methods=["POST", "GET"])
 def edit_item(category_name, item_name):
     item = db.get_item(item_name, category_name)
     if request.method == 'POST':
@@ -156,8 +159,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -183,7 +186,8 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
@@ -194,13 +198,15 @@ def logout():
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(
+            json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = ('https://accounts.google.com/o/oauth2/revoke?token=%s'
+           % login_session['access_token'])
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
@@ -216,7 +222,8 @@ def logout():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -229,5 +236,5 @@ if __name__ == '__main__':
 # CSS
 # Bug: Change category
 
-# client id 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com
+# cid 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com
 # client secret nzHsrTQ8rvgcKDGTAXlLJkud

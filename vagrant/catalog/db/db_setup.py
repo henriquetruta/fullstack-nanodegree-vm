@@ -1,5 +1,3 @@
-import sys
-
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
@@ -19,15 +17,17 @@ foosball = Category(name="Foosball")
 skating = Category(name="Skating")
 hockey = Category(name="Hockey")
 categories = [football, baseball, frisbee, snowboarding, rock_climbing,
-            foosball, skating, hockey]
+              foosball, skating, hockey]
 session.bulk_save_objects(categories)
 
 football_shoes = Item(name="Shoe", description="very cool",
                       categoryName="Football", created_by='henrique')
-football_ball = Item(name="Ball", description="Nice ball",
-                      categoryName="Football", created_by='henriquecostatruta@gmail.com')
+football_ball = Item(name="Ball",
+                     description="Nice ball",
+                     categoryName="Football",
+                     created_by='henriquecostatruta@gmail.com')
 baseball_ball = Item(name="Ball", description="Best ever",
-                      categoryName="Baseball", created_by='henrique')
+                     categoryName="Baseball", created_by='henrique')
 items = [football_shoes, football_ball, baseball_ball]
 
 session.bulk_save_objects(items)

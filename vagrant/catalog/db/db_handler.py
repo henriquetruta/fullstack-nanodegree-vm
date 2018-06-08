@@ -2,10 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db_model import Base, Category, Item
 
+
 class Database():
     def __init__(self):
         engine = create_engine('postgresql:///catalog')
-        Base.metadata.bind=engine
+        Base.metadata.bind = engine
         DBSession = sessionmaker(bind=engine)
         self.session = DBSession()
 
@@ -30,7 +31,8 @@ class Database():
         return self.session.query(Category).all()
 
     def delete_item(self, item_name, category_name):
-        item = self.session.query(Item).filter_by(name=item_name, categoryName=category_name).one()
+        item = self.session.query(Item).filter_by(
+            name=item_name, categoryName=category_name).one()
         self.session.delete(item)
         self.session.commit()
 
@@ -39,10 +41,13 @@ class Database():
         self.session.commit()
 
     def get_category_name(self, category_name):
-        return self.session.query(Category).filter_by(name=category_name).one().name
+        return self.session.query(Category).filter_by(
+            name=category_name).one().name
 
     def _get_category(self, category_name):
-        return self.session.query(Category).filter_by(name=category_name).one()
+        return self.session.query(Category).filter_by(
+            name=category_name).one()
 
     def get_item(self, item_name, category_name):
-        return self.session.query(Item).filter_by(name=item_name, categoryName=category_name).one()
+        return self.session.query(Item).filter_by(
+            name=item_name, categoryName=category_name).one()
