@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, flash, jsonify, make_response, redirect, request
 from flask import render_template, url_for
-from db.db_handler import Database
 from flask import session as login_session
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -13,9 +12,12 @@ import random
 import requests
 import string
 
+from db.db_handler import Database
+
 app = Flask(__name__)
 app.secret_key = 'some secret key'
 
+# Creates an instance of the Database handler
 db = Database()
 
 CLIENT_ID = json.loads(
@@ -40,7 +42,6 @@ def items_json():
 
 @app.route("/catalog/item/new", methods=["POST", "GET"])
 def add_item():
-    print request.form
     if request.method == 'POST':
         category = request.form['category']
         db.insert_item(request.form['name'],
@@ -104,11 +105,12 @@ def login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    return render_template('login.html', STATE=state)
+    return render_template('login.html', state=state)
 
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """Connects to Google oauth API."""
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -152,7 +154,6 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -210,7 +211,7 @@ def logout():
         del login_session['email']
         del login_session['picture']
         del login_session['logged_in']
-        flash("Succesfully logged out!")
+        flash("Successfully logged out!")
         return home()
     else:
         response = make_response(
@@ -221,11 +222,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, use_reloader=True, use_debugger=True)
-
-
-# TODO:
-# Add comments and docstrings
-# Update README
-
-# cid 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com
-# client secret nzHsrTQ8rvgcKDGTAXlLJkud

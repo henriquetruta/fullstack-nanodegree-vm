@@ -4,7 +4,10 @@ from db_model import Base, Category, Item
 
 
 class Database():
+    """Abstraction layer for database"""
+
     def __init__(self):
+        """Creates the necessary objects to connect to the postgres DB"""
         engine = create_engine('postgresql:///catalog')
         Base.metadata.bind = engine
         DBSession = sessionmaker(bind=engine)

@@ -3,6 +3,9 @@ from sqlalchemy import create_engine
 
 from db_model import Category, Item, Base
 
+# This file sets up the database and does an initial population with some
+# example categories and a few items.
+
 engine = create_engine('postgresql:///catalog')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
@@ -21,13 +24,11 @@ categories = [football, baseball, frisbee, snowboarding, rock_climbing,
 session.bulk_save_objects(categories)
 
 football_shoes = Item(name="Shoe", description="very cool",
-                      categoryName="Football", created_by='henrique')
-football_ball = Item(name="Ball",
-                     description="Nice ball",
-                     categoryName="Football",
-                     created_by='henriquecostatruta@gmail.com')
+                      categoryName="Football", created_by='foo@gmail.com')
+football_ball = Item(name="Ball", description="Nice ball",
+                     categoryName="Football", created_by='foo@gmail.com')
 baseball_ball = Item(name="Ball", description="Best ever",
-                     categoryName="Baseball", created_by='henrique')
+                     categoryName="Baseball", created_by='bar@gmail.com')
 items = [football_shoes, football_ball, baseball_ball]
 
 session.bulk_save_objects(items)
