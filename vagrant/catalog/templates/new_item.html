@@ -9,9 +9,9 @@
     <dt>Description:</dt>
         <dd><textarea name = 'description' rows='5' cols='40' required></textarea></dd>
     <dt>Category:</dt>
-    <select>
+    <select name='category'>
     {% for c in categories %}
-        <option  name='category' value='{{c.name}}'>{{c.name}}</option>
+        <option value='{{c.name}}' required>{{c.name}}</option>
     {% endfor %}
     </select>
 </dl>

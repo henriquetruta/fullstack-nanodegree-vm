@@ -28,7 +28,6 @@ APPLICATION_NAME = "Item Catalog Application"
 def home():
     categories = db.list_categories()
     latest = db.get_latest_items()
-    # return "The current session state is %s" % login_session['state']
     return render_template('home.html', categories=categories,
                            latest=latest)
 
@@ -41,6 +40,7 @@ def items_json():
 
 @app.route("/catalog/item/new", methods=["POST", "GET"])
 def add_item():
+    print request.form
     if request.method == 'POST':
         category = request.form['category']
         db.insert_item(request.form['name'],
@@ -56,7 +56,6 @@ def add_item():
 @app.route("/catalog/<category_name>/<item_name>/details", methods=["GET"])
 def get_item(category_name, item_name):
     item = db.get_item(item_name, category_name)
-    # is_logged =
     return render_template('item_description.html', item=item)
 
 
@@ -93,7 +92,7 @@ def edit_item(category_name, item_name):
             item.categoryName = request.form['category']
         db.edit_item(item)
         return redirect(url_for('get_item', item_name=item.name,
-                        category_name=category_name))
+                        category_name=item.categoryName))
     else:
         categories = db.list_categories()
         return render_template('item_edit.html', item=item,
@@ -235,9 +234,9 @@ if __name__ == '__main__':
 
 # TODO:
 # CSS
+# Bug do latest
 # Add comments and docstrings
 # Update README
-# Bug: Change category
 
 # cid 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com
 # client secret nzHsrTQ8rvgcKDGTAXlLJkud
