@@ -64,8 +64,9 @@ def get_item(category_name, item_name):
 def list_items(category_name):
     items = db.list_items(category_name)
     category_name = db.get_category_name(category_name)
-    return render_template('items.html', items=items,
-                           category_name=category_name)
+    categories = db.list_categories()
+    return render_template('items.html', items=items, amount=len(items),
+                           categories=categories, category_name=category_name)
 
 
 @app.route("/catalog/<category_name>/item/<item_name>/delete",
@@ -234,6 +235,8 @@ if __name__ == '__main__':
 
 # TODO:
 # CSS
+# Add comments and docstrings
+# Update README
 # Bug: Change category
 
 # cid 661440058086-lpomabg3j3arrj6u5jhe2sas56jtm0ah.apps.googleusercontent.com

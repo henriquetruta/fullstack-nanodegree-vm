@@ -1,20 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
-<br>
-{% if session.logged_in %}
-<p><a href="{{url_for('add_item', categories=categories)}}"> Add Item</a></p>
-{% endif %}
-<h1>Categories</h1>
-{% for i in categories %}
-<div>
-<p><a href="{{url_for('list_items', category_name=i.name)}}"> {{i.name}}</a></p>
-</div>
-{% endfor %}
+<div class=main-grid>
+    <div class=categories-list>
+        <h1>Categories</h1>
+        {% for i in categories %}
+        <div class=category>
+            <p><a href="{{url_for('list_items', category_name=i.name)}}"> {{i.name}}</a></p>
+        </div>
+        {% endfor %}
+    </div>
 
-<h2>Latest Items</h2>
-{% for i in latest %}
-<div>
-<p><a href="{{url_for('get_item', category_name=i.categoryName, item_name=i.name)}}"> {{i.name}} ({{ i.categoryName }})</a></p>
-</div>
+    <div class=items-list>
+    {% if session.logged_in %}
+    <a href="{{url_for('add_item', categories=categories)}}"> Add Item</a><br>
+    {% endif %}
+    <h1>Latest Items</h1>
+    {% for i in latest %}
+    <div class=item>
+    <p><a href="{{url_for('get_item', category_name=i.categoryName, item_name=i.name)}}"> {{i.name}} ({{ i.categoryName }})</a></p>
+    </div>
 {% endfor %}
+</div>
+<div class="clear"></div>
+</div>
 {% endblock %}
