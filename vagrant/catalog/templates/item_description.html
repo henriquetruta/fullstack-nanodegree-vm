@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>Details of {{item.name}}</h1>
+<h1>Description of {{item.name}} ({{ item.categoryName }})</h1>
 <div>
-<p>{{item.description}}</p>
+<p class=item-desc>{{item.description}}</p>
 </div>
 <br>
 {% if session.logged_in and session['email'] == item.created_by  %}

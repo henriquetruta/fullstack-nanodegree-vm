@@ -3,30 +3,50 @@
 	font-weight: 700;
 }
 body            { font-family: sans-serif; background: #eee; }
-a               { color: #454ea8; }
+a               { color: #454ea8; text-decoration: none !important; }
+dt              { color: #260f9b; margin-bottom: 5px; }
+dd              { margin-bottom: 10px; }
 h1, h2          { font-family: 'Georgia', serif; margin: 0; }
 h1              { font-size: 1.3em solid; color: #f47142 }
-
 
 .categories-list {
     width: 35%;
     float: left;
-    height: 300px;
     border-right: 2px solid gray;
+    display: table-row;
 }
 .items-list {
     margin-left:1em;
     float: left;
-    height: 300px;
+    display: table-row;
 }
 .clear {
     clear: both;
 }
-
-a {
-    text-decoration: none !important;
+.item-desc {
+    color: black;
+    font-style: italic;
+    font-weight: bold;
 }
-
+.category-link {
+    color: gray;
+    font-style: italic;
+    font-weight: lighter;
+}
+.page {
+    margin: 2em auto;
+    width: 45em;
+    border: 5px solid #ccc;
+    padding: 0.8em;
+    background: white;
+    display: table;
+    overflow: auto;
+}
+.flash {
+    background: #cee5F5;
+    padding: 0.5em;
+    border: 1px solid #aacbe2;
+}
 ul {
     list-style-type: none;
     margin: 0;
@@ -34,15 +54,12 @@ ul {
     overflow: hidden;
     background-color: #260f9b;
 }
-
 li {
     float: left;
 }
-
 li:last-child {
     border-right: none;
 }
-
 li a {
     display: block;
     color: white;
@@ -50,13 +67,6 @@ li a {
     padding: 14px 16px;
     text-decoration: none;
 }
-
-/* Change the link color to #111 (black) on hover */
 li a:hover {
     background-color: #111;
 }
-
-.page           { margin: 2em auto; width: 45em; border: 5px solid #ccc;
-                  padding: 0.8em; background: white; }
-.flash          { background: #cee5F5; padding: 0.5em;
-                  border: 1px solid #aacbe2; }
