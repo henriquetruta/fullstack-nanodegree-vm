@@ -34,14 +34,22 @@ def home():
                            latest=latest)
 
 
-@app.route("/catalog.json")
+@app.route("/catalog/json")
 def items_json():
-    items = db.list_all_items_json()
+    items = db.list_all_items()
     return jsonify(Items=[i.serialize for i in items])
+
+
+@app.route("/catalog/<category_name>/<item_name>/json")
+def get_item_json(category_name, item_name):
+    item = db.get_item(item_name, category_name)
+    return jsonify(Item=[item])
 
 
 @app.route("/catalog/item/new", methods=["POST", "GET"])
 def add_item():
+    # NOTE: This route is only for authenticated users. The Add Item button is
+    # only displayed when the user is logged, with the checks made on front-end
     if request.method == 'POST':
         category = request.form['category']
         db.insert_item(request.form['name'],
@@ -63,7 +71,6 @@ def get_item(category_name, item_name):
 @app.route("/catalog/<category_name>/list", methods=["GET"])
 def list_items(category_name):
     items = db.list_items(category_name)
-    category_name = db.get_category_name(category_name)
     categories = db.list_categories()
     return render_template('items.html', items=items, amount=len(items),
                            categories=categories, category_name=category_name)
@@ -72,6 +79,9 @@ def list_items(category_name):
 @app.route("/catalog/<category_name>/item/<item_name>/delete",
            methods=["POST", "GET"])
 def delete_item(item_name, category_name):
+    # NOTE: This route is only for authorized users. The Delete Item button is
+    # only displayed when the user is logged and is the creator of the item,
+    # with the checks made on front-end
     item = db.get_item(item_name, category_name)
     if request.method == 'POST':
         db.delete_item(item_name, category_name)
@@ -83,6 +93,9 @@ def delete_item(item_name, category_name):
 @app.route("/catalog/<category_name>/item/<item_name>/edit",
            methods=["POST", "GET"])
 def edit_item(category_name, item_name):
+    # NOTE: This route is only for authorized users. The Edit Item button is
+    # only displayed when the user is logged and is the creator of the item,
+    # with the checks made on front-end
     item = db.get_item(item_name, category_name)
     if request.method == 'POST':
         if request.form['name']:
